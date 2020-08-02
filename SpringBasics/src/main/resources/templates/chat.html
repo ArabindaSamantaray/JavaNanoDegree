@@ -8,8 +8,6 @@
 <body>
 
 <form th:object="${ChatForm}" th:url="@{/chat}" action="#" method="post">
-    <label for="username">Username:</label>
-    <input id="username" type="text" th:field="*{userName}">
     <label for="messageText">Message Text:</label>
     <input id="messageText" type="text" th:field="*{userMessage}">
     <label for="messageType">Message Type: </label>
@@ -24,6 +22,8 @@
 <div th:each="msg : ${ChatMessage}">
     <span th:text="${msg.getUserName()}">User Name</span>:<span th:text="${msg.getUserMessage()}">User Message</span>
 </div>
+
+<a href="/logout">logout</a>
 
 </body>
 </html>

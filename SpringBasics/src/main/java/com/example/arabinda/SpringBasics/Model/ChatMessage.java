@@ -2,8 +2,17 @@ package com.example.arabinda.SpringBasics.Model;
 
 public class ChatMessage {
 
+    private Integer messageid;
     private String userName;
     private String userMessage;
+
+    public Integer getMessageid() {
+        return messageid;
+    }
+
+    public void setMessageid(Integer messageid) {
+        this.messageid = messageid;
+    }
 
     public String getUserName() {
         return userName;
