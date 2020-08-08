@@ -21,4 +21,7 @@ public interface FileMapper {
 
     @Delete("Delete from Files where fileid = #{arg0} and userid = #{arg1}")
     void deleteFile(int fileId, int userId);
+
+    @Select("Select * from Files where fileid = #{arg0} and userid = #{arg1}")
+    Files getFile(int fileId, int userId);
 }
