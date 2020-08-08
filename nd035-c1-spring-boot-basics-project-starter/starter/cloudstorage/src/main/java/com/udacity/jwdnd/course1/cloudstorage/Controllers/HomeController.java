@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,9 +39,10 @@ public class HomeController {
         return "home";
     }
 
-    @DeleteMapping("/delete")
-    public String deleteFile(@ModelAttribute("Files") Files file, Model model){
-        System.out.println("file value is: " + file.toString());
+    @GetMapping("/delete/{fileId}")
+    public String deleteFile(@PathVariable Integer fileId, Model model){
+        fileService.deleteFile(fileId);
+        model.addAttribute("Files", fileService.getListOfFiles());
         return "home";
     }
 }

@@ -36,4 +36,9 @@ public class FileService {
         Integer userId = userMapper.getUser(SecurityContextHolder.getContext().getAuthentication().getName()).getUserid();
         return fileMapper.getAllFiles(userId);
     }
+
+    public void deleteFile(Integer fileId) {
+        Integer userId = userMapper.getUser(SecurityContextHolder.getContext().getAuthentication().getName()).getUserid();
+        fileMapper.deleteFile(fileId, userId);
+    }
 }
