@@ -10,7 +10,7 @@ public class Files {
     public Integer fileId;
     public String filename;
     public String contenttype;
-    public long filesize;
+    public Long filesize;
 
     public Integer userid;
 
@@ -18,9 +18,9 @@ public class Files {
     @Column(name = "filedata", columnDefinition="BLOB")
     private byte[] filedata;
 
-    public Files(Integer fileId, String fileName, String contenttype, long filesize, Integer userid, byte[] filedata) {
+    public Files(Integer fileId, String filename, String contenttype, Long filesize, Integer userid, byte[] filedata) {
         this.fileId = fileId;
-        this.filename = fileName;
+        this.filename = filename;
         this.contenttype = contenttype;
         this.filesize = filesize;
         this.userid = userid;
@@ -59,11 +59,11 @@ public class Files {
         this.contenttype = contenttype;
     }
 
-    public long getFilesize() {
+    public Long getFilesize() {
         return filesize;
     }
 
-    public void setFilesize(long filesize) {
+    public void setFilesize(Long filesize) {
         this.filesize = filesize;
     }
 

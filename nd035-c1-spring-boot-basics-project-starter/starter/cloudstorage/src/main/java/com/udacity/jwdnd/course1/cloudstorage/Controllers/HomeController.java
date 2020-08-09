@@ -2,7 +2,9 @@ package com.udacity.jwdnd.course1.cloudstorage.Controllers;
 
 import com.udacity.jwdnd.course1.cloudstorage.Mappers.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.Models.Files;
+import com.udacity.jwdnd.course1.cloudstorage.Models.Notes;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
+import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/home")
@@ -26,29 +29,33 @@ public class HomeController {
 
     FileService fileService;
     UserMapper userMapper;
+    NoteService noteService;
 
-    public HomeController(FileService fileService, UserMapper userMapper) {
+    public HomeController(FileService fileService, UserMapper userMapper, NoteService noteService) {
         this.fileService = fileService;
         this.userMapper = userMapper;
+        this.noteService = noteService;
     }
 
     @GetMapping
-    public String getHome(){
-        return "home";
+    public ModelAndView getHome(Authentication authentication) throws Exception {
+        String userName = authentication.getName();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("Notes", noteService.getAllNotes(userName));
+        modelAndView.addObject("Files", fileService.getListOfFiles(userName));
+        return modelAndView;
     }
 
     @PostMapping("/upload")
     public String uploadFile(MultipartFile fileUpload, Model model) throws Exception {
         fileService.saveFile(fileUpload);
-        model.addAttribute("Files", fileService.getListOfFiles());
-        return "home";
+        return "redirect:/home";
     }
 
     @GetMapping("/delete/{fileId}")
     public String deleteFile(@PathVariable Integer fileId, Model model) throws Exception {
         fileService.deleteFile(fileId);
-        model.addAttribute("Files", fileService.getListOfFiles());
-        return "home";
+        return "redirect:/home";
     }
 
     @GetMapping("/view/{fileId}")

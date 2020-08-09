@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 
 import com.udacity.jwdnd.course1.cloudstorage.Mappers.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.Models.Users;
+import com.udacity.jwdnd.course1.cloudstorage.services.Utils.UserServiceUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +14,16 @@ public class UserService {
 
     private HashService hashService;
     private UserMapper userMapper;
+    private UserServiceUtils userServiceUtils;
 
-    public UserService(HashService hashService, UserMapper userMapper) {
+    public UserService(HashService hashService, UserMapper userMapper, UserServiceUtils userServiceUtils) {
         this.hashService = hashService;
         this.userMapper = userMapper;
+        this.userServiceUtils = userServiceUtils;
     }
 
-    public int createUser(Users user){
+    public int createUser(Users user) throws Exception {
+        userServiceUtils.validateUser(user);
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);

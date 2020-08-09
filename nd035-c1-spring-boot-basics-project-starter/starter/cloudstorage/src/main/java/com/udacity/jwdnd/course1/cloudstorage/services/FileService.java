@@ -36,9 +36,9 @@ public class FileService {
         }
     }
 
-    public List<Files> getListOfFiles() throws Exception {
+    public List<Files> getListOfFiles(String userName) throws Exception {
         try{
-            Integer userId = userMapper.getUser(SecurityContextHolder.getContext().getAuthentication().getName()).getUserid();
+            Integer userId = userMapper.getUser(userName).getUserid();
             return fileMapper.getAllFiles(userId);
         } catch (Exception e){
             throw new Exception("There was an error in getting the list of files");

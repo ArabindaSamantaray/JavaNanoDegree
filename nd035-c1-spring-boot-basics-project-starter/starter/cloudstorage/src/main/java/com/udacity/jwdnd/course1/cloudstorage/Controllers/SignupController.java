@@ -30,7 +30,7 @@ public class SignupController {
             userService.createUser(user);
             model.addAttribute("signupSuccess", true);
         } catch (Exception e) {
-            model.addAttribute("signupError", true);
+            model.addAttribute("signupError", e.getMessage());
         }
 
         return "signup";
