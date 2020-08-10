@@ -32,6 +32,7 @@ public class NotesController {
     public String createNotes(@ModelAttribute("Notes") Notes notes, Model model, Authentication authentication){
         if(notes.getNoteid()==null){
             noteService.createNotes(notes, authentication.getName());
+            red
         } else {
             noteService.updateNotes(notes, authentication.getName());
         }

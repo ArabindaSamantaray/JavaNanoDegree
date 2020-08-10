@@ -3,6 +3,7 @@ package com.udacity.jwdnd.course1.cloudstorage.Controllers;
 import com.udacity.jwdnd.course1.cloudstorage.Mappers.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.Models.Files;
 import com.udacity.jwdnd.course1.cloudstorage.Models.Notes;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import org.springframework.core.io.ByteArrayResource;
@@ -30,11 +31,14 @@ public class HomeController {
     FileService fileService;
     UserMapper userMapper;
     NoteService noteService;
+    CredentialService credentialService;
 
-    public HomeController(FileService fileService, UserMapper userMapper, NoteService noteService) {
+    public HomeController(FileService fileService, UserMapper userMapper, NoteService noteService,
+        CredentialService credentialService) {
         this.fileService = fileService;
         this.userMapper = userMapper;
         this.noteService = noteService;
+        this.credentialService = credentialService;
     }
 
     @GetMapping
@@ -43,6 +47,7 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("Notes", noteService.getAllNotes(userName));
         modelAndView.addObject("Files", fileService.getListOfFiles(userName));
+        modelAndView.addObject("Credentials", credentialService.getListOfCredentials(userName));
         return modelAndView;
     }
 
