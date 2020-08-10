@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/home")
@@ -52,23 +53,38 @@ public class HomeController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(MultipartFile fileUpload, Model model) throws Exception {
-        fileService.saveFile(fileUpload);
-        return "redirect:/home";
+    public String uploadFile(MultipartFile fileUpload, Model model, RedirectAttributes redirectAttributes) throws Exception {
+        try{
+            fileService.saveFile(fileUpload);
+            redirectAttributes.addFlashAttribute("successMessage", "The file was saved correctly. ");
+            return "redirect:/result";
+        } catch (Exception e){
+            redirectAttributes.addFlashAttribute("failureMessage", e.getMessage());
+            return "redirect:/result";
+        }
+
     }
 
     @GetMapping("/delete/{fileId}")
-    public String deleteFile(@PathVariable Integer fileId, Model model) throws Exception {
-        fileService.deleteFile(fileId);
-        return "redirect:/home";
+    public String deleteFile(@PathVariable Integer fileId, Model model, RedirectAttributes redirectAttributes) throws Exception {
+        try{
+            fileService.deleteFile(fileId);
+            redirectAttributes.addFlashAttribute("successMessage", "The file was deleted correctly. ");
+            return "redirect:/result";
+        } catch (Exception e){
+            redirectAttributes.addFlashAttribute("failureMessage", "The file could not be deleted. Please try again. ");
+            return "redirect:/result";
+        }
     }
 
     @GetMapping("/view/{fileId}")
     public ResponseEntity<Resource> viewFile(@PathVariable Integer fileId){
+
         Files file = fileService.getFile(fileId);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getContenttype())).
-            header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\""+file.getFilename()+"\"").body(
-                new ByteArrayResource(file.getFiledata())
-        );
+            header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + file.getFilename() + "\"")
+            .body(new ByteArrayResource(file.getFiledata()));
+
+
     }
 }

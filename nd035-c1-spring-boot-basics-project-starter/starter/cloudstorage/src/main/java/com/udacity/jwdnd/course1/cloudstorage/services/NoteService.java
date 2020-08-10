@@ -21,10 +21,15 @@ public class NoteService {
         this.userMapper = userMapper;
     }
 
-    public void createNotes(Notes notes, String userName){
-        Integer userid = userMapper.getUser(userName).getUserid();
-        notes.setUserid(userid);
-        noteMapper.createNotes(notes);
+    public void createNotes(Notes notes, String userName) throws Exception {
+        try{
+            Integer userid = userMapper.getUser(userName).getUserid();
+            notes.setUserid(userid);
+            noteMapper.createNotes(notes);
+        } catch (Exception e){
+            throw new Exception("The note could not be create. Please try again");
+        }
+
     }
 
     public List<Notes> getAllNotes(String userName){

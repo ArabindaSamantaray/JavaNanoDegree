@@ -26,9 +26,8 @@ public class FileService {
     }
 
     public int saveFile(MultipartFile file) throws Exception {
-
-        Integer userId = userMapper.getUser(SecurityContextHolder.getContext().getAuthentication().getName()).getUserid();
         try {
+            Integer userId = userMapper.getUser(SecurityContextHolder.getContext().getAuthentication().getName()).getUserid();
             fileServiceUtils.validate(file, userId);
             return fileMapper.insertFiles(new Files(null, file.getOriginalFilename(), file.getContentType(), file.getSize(),  userId, file.getBytes()));
         } catch (Exception e) {

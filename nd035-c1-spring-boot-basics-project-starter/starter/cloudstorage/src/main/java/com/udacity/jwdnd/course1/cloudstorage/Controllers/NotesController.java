@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -29,19 +30,38 @@ public class NotesController {
     }
 
     @PostMapping("/createNote")
-    public String createNotes(@ModelAttribute("Notes") Notes notes, Model model, Authentication authentication){
+    public String createNotes(@ModelAttribute("Notes") Notes notes, Model model, Authentication authentication, RedirectAttributes redirectAttributes){
         if(notes.getNoteid()==null){
-            noteService.createNotes(notes, authentication.getName());
-            red
+            try {
+                noteService.createNotes(notes, authentication.getName());
+                redirectAttributes.addFlashAttribute("successMessage", "Your note was created successfully. ");
+                return "redirect:/result";
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("failureMessage", "Creation of the note failed. Please try again. ");
+                return "redirect:/result";
+            }
         } else {
-            noteService.updateNotes(notes, authentication.getName());
+            try {
+                noteService.updateNotes(notes, authentication.getName());
+                redirectAttributes.addFlashAttribute("successMessage", "Your note was updated successfully. ");
+                return "redirect:/result";
+            } catch (Exception e){
+                redirectAttributes.addFlashAttribute("failureMessage", "Updation of the note failed. Please try again. ");
+                return "redirect:/result";
+            }
+
         }
-        return "redirect:/home";
     }
 
     @GetMapping("/deleteNote/{noteId}")
-    public String deleteNotes(@PathVariable("noteId") Integer noteId, Model model, Authentication authentication){
-        noteService.deleteNotes(noteId, authentication.getName());
-        return "redirect:/home";
+    public String deleteNotes(@PathVariable("noteId") Integer noteId, Model model, Authentication authentication, RedirectAttributes redirectAttributes){
+        try{
+            noteService.deleteNotes(noteId, authentication.getName());
+            redirectAttributes.addFlashAttribute("successMessage", "The note was deleted successfully. ");
+            return "redirect:/result";
+        } catch (Exception e){
+            redirectAttributes.addFlashAttribute("failureMessage", "Deletion of the note failed. Please try again. ");
+            return "redirect:/result";
+        }
     }
 }

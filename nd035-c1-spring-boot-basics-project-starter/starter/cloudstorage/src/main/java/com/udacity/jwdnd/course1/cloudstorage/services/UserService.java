@@ -24,18 +24,28 @@ public class UserService {
 
     public int createUser(Users user) throws Exception {
         userServiceUtils.validateUser(user);
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        String encodedSalt = Base64.getEncoder().encodeToString(salt);
-        String hashedPassword = hashService.getHashedValue(user.getPassword(), encodedSalt);
+        try{
+            SecureRandom random = new SecureRandom();
+            byte[] salt = new byte[16];
+            random.nextBytes(salt);
+            String encodedSalt = Base64.getEncoder().encodeToString(salt);
+            String hashedPassword = hashService.getHashedValue(user.getPassword(), encodedSalt);
 
-        int records = userMapper.insertUser(new Users(null, user.getUsername(),encodedSalt, hashedPassword, user.getFirstName(), user.getLastName()));
-        return records;
+            int records = userMapper.insertUser(new Users(null, user.getUsername(),encodedSalt, hashedPassword, user.getFirstName(), user.getLastName()));
+            return records;
+        } catch (Exception e){
+            throw new Exception("There was an error in creating the User. Kindly try again");
+        }
+
     }
 
-    public Users getUser(){
+    public Users getUser() throws Exception {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userMapper.getUser(userName);
+        try{
+            return userMapper.getUser(userName);
+        } catch (Exception e){
+            throw new Exception("The user '" + userName + "' could not be found in the database");
+        }
+
     }
 }

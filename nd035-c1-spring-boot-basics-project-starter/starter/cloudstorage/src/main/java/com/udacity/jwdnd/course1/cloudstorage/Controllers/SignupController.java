@@ -32,7 +32,6 @@ public class SignupController {
         } catch (Exception e) {
             model.addAttribute("signupError", e.getMessage());
         }
-
         return "signup";
     }
 }
