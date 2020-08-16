@@ -204,4 +204,15 @@ public class TestSignupAndLogin {
 
     }
 
+    @Test
+    @Order(11)
+    public void testLogout(){
+        this.goToPath("home");
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.id("logoutButton")))).click();
+        this.goToPath("home");
+        WebElement login = driver.findElement(By.id("LoginHeader"));
+        Assert.assertEquals(login.getText(), "Login");
+    }
+
 }
