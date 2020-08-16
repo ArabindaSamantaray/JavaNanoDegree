@@ -31,6 +31,7 @@ public class NotesController {
 
     @PostMapping("/createNote")
     public String createNotes(@ModelAttribute("Notes") Notes notes, Model model, Authentication authentication, RedirectAttributes redirectAttributes){
+        System.out.println(notes.toString() + " : " +authentication.getName());
         if(notes.getNoteid()==null){
             try {
                 noteService.createNotes(notes, authentication.getName());

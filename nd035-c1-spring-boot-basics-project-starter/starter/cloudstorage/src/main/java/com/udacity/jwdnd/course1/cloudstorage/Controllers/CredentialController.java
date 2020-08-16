@@ -31,10 +31,10 @@ public class CredentialController {
         if(credentials.getCredentialid()==null){
             try{
                 credentialService.createCredentials(credentials, userName);
-                redirectAttributes.addFlashAttribute("successMessage", "The credentials were correctly stored in the database. ");
+                redirectAttributes.addFlashAttribute("successMessage", "The credentials were correctly stored in the database.");
                 return "redirect:/result";
             } catch (Exception e){
-                redirectAttributes.addFlashAttribute("failureMessage", "The credentials were not correctly stored in the database. ");
+                redirectAttributes.addFlashAttribute("failureMessage", "The credentials were not correctly stored in the database.");
                 return "redirect:/result";
             }
         } else {
@@ -55,7 +55,7 @@ public class CredentialController {
         try{
             String userName = authentication.getName();
             credentialService.deleteCredentials(credentialId, userName);
-            redirectAttributes.addFlashAttribute("successMessage", "The credentials were correctly deleted from the database. ");
+            redirectAttributes.addFlashAttribute("successMessage", "The credentials were correctly deleted from the database.");
             return "redirect:/result";
         }catch (Exception e){
             redirectAttributes.addFlashAttribute("failureMessage", "The credentials were not deleted from the database. ");
