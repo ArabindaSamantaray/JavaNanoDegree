@@ -75,9 +75,9 @@ public class TestSignupAndLogin {
         driver.findElement(By.id("inputUsername")).sendKeys("samantarayarabinda");
         driver.findElement(By.id("inputPassword")).sendKeys("SURANJANARAY");
         driver.findElement(By.id("signUp")).click();
-
+        Thread.sleep(3000);
         WebElement successMessage = driver.findElement(By.id("successMessage"));
-        Assert.assertEquals(successMessage.getText(),"You successfully signed up! Please continue to the login page.");
+        Assert.assertEquals(successMessage.getText(),"You successfully signed up! Please continue.");
         Thread.sleep(3000);
     }
 
@@ -135,7 +135,7 @@ public class TestSignupAndLogin {
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-notes-tab"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.id("deleteNote"))).click();
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         String text = driver.findElement(By.id("successMessage")).getText();
         Assert.assertEquals(text, "The note was deleted successfully.");
         Thread.sleep(3000);
@@ -192,7 +192,7 @@ public class TestSignupAndLogin {
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-credentials-tab"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.id("deleteCredential"))).click();
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         wait.until(ExpectedConditions.textToBePresentInElement(driver.findElement(By.id("successMessage")),
             "The credentials were correctly deleted from the database."));
         Thread.sleep(3000);
