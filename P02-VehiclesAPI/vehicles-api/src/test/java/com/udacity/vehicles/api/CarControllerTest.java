@@ -1,5 +1,6 @@
 package com.udacity.vehicles.api;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -18,21 +19,28 @@ import com.udacity.vehicles.domain.Location;
 import com.udacity.vehicles.domain.car.Car;
 import com.udacity.vehicles.domain.car.Details;
 import com.udacity.vehicles.domain.manufacturer.Manufacturer;
+import com.udacity.vehicles.service.CarNotFoundException;
 import com.udacity.vehicles.service.CarService;
 import java.net.URI;
 import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 /**
  * Implements testing of the CarController class.
@@ -57,6 +65,7 @@ public class CarControllerTest {
 
     @MockBean
     private MapsClient mapsClient;
+
 
     /**
      * Creates pre-requisites for testing, such as an example car.
@@ -96,7 +105,9 @@ public class CarControllerTest {
          *   the whole list of vehicles. This should utilize the car from `getCar()`
          *   below (the vehicle will be the first in the list).
          */
-
+        ResultActions perform = mvc.perform(get(new URI("/cars")));
+        perform.andExpect(status().is(HttpStatus.OK.value())).
+            andExpect(content().string(containsString("Impala")));
     }
 
     /**
@@ -109,6 +120,10 @@ public class CarControllerTest {
          * TODO: Add a test to check that the `get` method works by calling
          *   a vehicle by ID. This should utilize the car from `getCar()` below.
          */
+        ResultActions perform = mvc.perform(get(new URI("/cars/1")));
+        perform.andExpect(status().is(HttpStatus.OK.value())).
+            andExpect(content().string(containsString("Impala")));
+
     }
 
     /**
@@ -122,6 +137,10 @@ public class CarControllerTest {
          *   when the `delete` method is called from the Car Controller. This
          *   should utilize the car from `getCar()` below.
          */
+
+        mvc.perform(delete(new URI("/cars/1"))).andExpect(status().is(HttpStatus.NO_CONTENT.value()));
+        Mockito.when(carService.findById(Mockito.anyLong())).thenThrow(CarNotFoundException.class);
+        mvc.perform(get(new URI("/cars/1"))).andExpect(status().is(HttpStatus.NOT_FOUND.value()));
     }
 
     /**
