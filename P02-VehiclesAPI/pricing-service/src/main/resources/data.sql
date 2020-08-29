@@ -1,0 +1,1 @@
+insert into price(id, currency, price, vehicle_id) values (1, 'USD', 10000, 10)
