@@ -26,7 +26,7 @@ public class Schedule {
     @ManyToMany
     private List<Pet> petList;
 
-    private LocalDate date;
+    private LocalDate scheduledDate;
 
     @ElementCollection
     private Set<EmployeeSkill> skillList;
@@ -52,11 +52,11 @@ public class Schedule {
     }
 
     public LocalDate getDate() {
-        return date;
+        return scheduledDate;
     }
 
     public void setDate(LocalDate date) {
-        this.date = date;
+        this.scheduledDate = date;
     }
 
     public Set<EmployeeSkill> getSkillList() {
@@ -65,5 +65,11 @@ public class Schedule {
 
     public void setSkillList(Set<EmployeeSkill> skillList) {
         this.skillList = skillList;
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" + "Id=" + Id + ", employeeList=" + employeeList + ", petList=" + petList + ", date=" + scheduledDate
+            + ", skillList=" + skillList + '}';
     }
 }

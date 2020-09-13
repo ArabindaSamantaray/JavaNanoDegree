@@ -11,12 +11,14 @@ import com.udacity.jdnd.course3.critter.user.Customer;
 import com.udacity.jdnd.course3.critter.user.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ScheduleService {
 
     @Autowired
@@ -55,6 +57,7 @@ public class ScheduleService {
     
     private ScheduleDTO convertScheduleToScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
+        System.out.println("Scheduled date is: " + schedule.toString());
         scheduleDTO.setActivities(schedule.getSkillList());
         scheduleDTO.setDate(schedule.getDate());
         scheduleDTO.setEmployeeIds(schedule.getEmployeeList().stream().map(Employee::getId).collect(Collectors.toList()));

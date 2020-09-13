@@ -76,4 +76,10 @@ public class Pet {
     public Long getId() {
         return Id;
     }
+
+    @Override
+    public String toString() {
+        return "Pet{" + "Id=" + Id + ", type=" + type + ", name='" + name + '\'' + ", birthDate=" + birthDate
+            + ", notes='" + notes + '\'' + ", customer=" + customer + '}';
+    }
 }

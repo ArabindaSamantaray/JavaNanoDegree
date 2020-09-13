@@ -53,4 +53,10 @@ public class Employee {
     public Long getId() {
         return Id;
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" + "Id=" + Id + ", name='" + name + '\'' + ", listOfSkills=" + listOfSkills
+            + ", scheduleList=" + scheduleList + '}';
+    }
 }
